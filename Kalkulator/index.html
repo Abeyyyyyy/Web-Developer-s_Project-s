@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Scientific 3D - Portofolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#93B5C6',
+                        secondary: '#C9CCD5',
+                        accent: '#E4D8DC',
+                        highlight: '#FFE3E3',
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #93B5C6;
+            --secondary: #C9CCD5;
+            --accent: #E4D8DC;
+            --highlight: #FFE3E3;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #93B5C6 0%, #C9CCD5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+        
+        .flip-card {
+            width: 700px;
+            height: 500px;
+            perspective: 1500px;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.1),
+                0 3px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .flip-card-front {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            transform: rotateY(0deg);
+        }
+        
+        .flip-card-back {
+            background: linear-gradient(145deg, #FFE3E3, #f5d6d6);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .calculator-display {
+            background: #FFE3E3;
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 4px 8px rgba(0, 0, 0, 0.05),
+                0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn {
+            background: #E4D8DC;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .num-btn {
+            background: #C9CCD5;
+        }
+        
+        .operator-btn {
+            background: #93B5C6;
+            color: white;
+        }
+        
+        .scientific-btn {
+            background: #E4D8DC;
+            font-size: 0.85rem;
+        }
+        
+        .equals-btn {
+            background: #FFE3E3;
+            color: #2D3748;
+        }
+        
+        .clear-btn {
+            background: #FFE3E3;
+        }
+        
+        .flip-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #93B5C6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .flip-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+        }
+        
+        .history-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-left: 3px solid #93B5C6;
+            transition: all 0.2s;
+        }
+        
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(5px);
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .mode-indicator {
+            background: rgba(147, 181, 198, 0.2);
+            border-radius: 10px;
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            color: #2D3748;
+        }
+    </style>
+</head>
+<body>
+    <div class="flip-card floating">
+        <div class="flip-card-inner">
+            <!-- Sisi Depan - Kalkulator Scientific -->
+            <div class="flip-card-front p-6">
+                <div class="flex flex-col h-full">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-800">Kalkulator Scientific</h1>
+                            <p class="text-gray-600 text-sm">Portofolio Project</p>
+                        </div>
+                        <div class="mode-indicator">
+                            <i class="fas fa-flask mr-1"></i> Scientific Mode
+                        </div>
+                    </div>
+                    
+                    <!-- Display -->
+                    <div class="calculator-display p-4 mb-4">
+                        <div class="text-right">
+                            <div id="history" class="text-gray-500 text-sm h-5 mb-1 overflow-hidden"></div>
+                            <div id="display" class="text-3xl font-semibold text-gray-800 overflow-x-auto whitespace-nowrap">0</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tombol Kalkulator -->
+                    <div class="grid grid-cols-7 gap-2 flex-grow">
+                        <!-- Baris 1 -->
+                        <button class="btn scientific-btn" onclick="appendFunction('sin(')">sin</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('cos(')">cos</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('tan(')">tan</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('log(')">log</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('ln(')">ln</button>
+                        <button class="btn clear-btn" onclick="clearAll()">C</button>
+                        <button class="btn clear-btn" onclick="deleteLast()"><i class="fas fa-backspace"></i></button>
+                        
+                        <!-- Baris 2 -->
+                        <button class="btn scientific-btn" onclick="appendToDisplay('π')">π</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('e')">e</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('(')">(</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay(')')">)</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('^')">x^y</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('!')">x!</button>
+                        <button class="btn scientific-btn" onclick="calculateSquareRoot()">√</button>
+                        
+                        <!-- Baris 3 -->
+                        <button class="btn scientific-btn" onclick="appendToDisplay('7')">7</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('8')">8</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('9')">9</button>
+                        <button class="btn operator-btn" onclick="appendToDisplay('/')">÷</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('%')">%</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('asin(')">sin⁻¹</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('acos(')">cos⁻¹</button>
+                        
+                        <!-- Baris 4 -->
+                        <button class="btn num-btn" onclick="appendToDisplay('4')">4</button>
+                        <button class="btn num-btn" onclick="appendToDisplay('5')">5</button>
+                        <button class="btn num-btn" onclick="appendToDisplay('6')">6</button>
+                        <button class="btn operator-btn" onclick="appendToDisplay('*')">×</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('^2')">x²</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('atan(')">tan⁻¹</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('1/')">1/x</button>
+                        
+                        <!-- Baris 5 -->
+                        <button class="btn num-btn" onclick="appendToDisplay('1')">1</button>
+                        <button class="btn num-btn" onclick="appendToDisplay('2')">2</button>
+                        <button class="btn num-btn" onclick="appendToDisplay('3')">3</button>
+                        <button class="btn operator-btn" onclick="appendToDisplay('-')">-</button>
+                        <button class="btn scientific-btn" onclick="appendToDisplay('10^')">10ˣ</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('abs(')">|x|</button>
+                        <button class="btn scientific-btn" onclick="appendFunction('exp(')">eˣ</button>
+                        
+                        <!-- Baris 6 -->
+                        <button class="btn num-btn col-span-2" onclick="appendToDisplay('0')">0</button>
+                        <button class="btn num-btn" onclick="appendToDisplay('.')">.</button>
+                        <button class="btn operator-btn" onclick="appendToDisplay('+')">+</button>
+                        <button class="btn equals-btn col-span-3" onclick="calculate()">=</button>
+                    </div>
+                </div>
+                
+                <!-- Tombol Flip -->
+                <div class="flip-btn" onclick="flipCard()">
+                    <i class="fas fa-history"></i>
+                </div>
+            </div>
+            
+            <!-- Sisi Belakang - Riwayat -->
+            <div class="flip-card-back p-6">
+                <div class="flex flex-col h-full">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h1 class="text-2xl font-bold text-gray-800">Riwayat Perhitungan</h1>
+                        <p class="text-gray-600 text-sm">Scientific Calculator</p>
+                    </div>
+                    
+                    <!-- Daftar Riwayat -->
+                    <div id="historyPanel" class="flex-grow overflow-y-auto pr-2">
+                        <div class="text-gray-500 text-center py-8">Riwayat perhitungan akan muncul di sini</div>
+                    </div>
+                    
+                    <!-- Tombol Aksi -->
+                    <div class="flex space-x-2 mt-4">
+                        <button class="flex-1 bg-white/80 text-gray-800 py-3 rounded-xl hover:bg-white transition font-medium" onclick="clearHistory()">
+                            Hapus Riwayat
+                        </button>
+                        <button class="flex-1 bg-white/80 text-gray-800 py-3 rounded-xl hover:bg-white transition font-medium" onclick="exportHistory()">
+                            <i class="fas fa-download mr-2"></i>Export
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tombol Flip -->
+                <div class="flip-btn" onclick="flipCard()">
+                    <i class="fas fa-calculator"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variabel global
+        let display = document.getElementById('display');
+        let historyDisplay = document.getElementById('history');
+        let historyPanel = document.getElementById('historyPanel');
+        let currentInput = '0';
+        let calculationHistory = [];
+        
+        // Konstanta matematika
+        const mathConstants = {
+            'π': Math.PI,
+            'e': Math.E
+        };
+        
+        // Fungsi untuk flip card
+        function flipCard() {
+            const flipCard = document.querySelector('.flip-card');
+            flipCard.classList.toggle('flipped');
+        }
+        
+        // Fungsi untuk memperbarui tampilan
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+        
+        // Fungsi untuk menambahkan ke tampilan
+        function appendToDisplay(value) {
+            if (currentInput === '0' && value !== '.' && !isOperator(value)) {
+                currentInput = value;
+            } else {
+                // Jika yang terakhir adalah operator dan menambahkan operator baru, ganti operator
+                if (isOperator(currentInput.slice(-1)) && isOperator(value)) {
+                    currentInput = currentInput.slice(0, -1) + value;
+                } else {
+                    currentInput += value;
+                }
+            }
+            updateDisplay();
+        }
+        
+        // Fungsi untuk menambahkan fungsi matematika
+        function appendFunction(func) {
+            if (currentInput === '0') {
+                currentInput = func;
+            } else {
+                currentInput += func;
+            }
+            updateDisplay();
+        }
+        
+        // Fungsi untuk memeriksa apakah karakter adalah operator
+        function isOperator(char) {
+            return ['+', '-', '*', '/', '^', '%'].includes(char);
+        }
+        
+        // Fungsi untuk menghapus semua
+        function clearAll() {
+            currentInput = '0';
+            historyDisplay.textContent = '';
+            updateDisplay();
+        }
+        
+        // Fungsi untuk menghapus karakter terakhir
+        function deleteLast() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+        
+        // Fungsi untuk menghitung faktorial
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+        
+        // Fungsi untuk memproses ekspresi matematika
+        function processExpression(expr) {
+            // Ganti konstanta dengan nilainya
+            for (const [constant, value] of Object.entries(mathConstants)) {
+                expr = expr.replace(new RegExp(constant, 'g'), value);
+            }
+            
+            // Tangani faktorial
+            expr = expr.replace(/(\d+)!/g, (match, num) => factorial(parseInt(num)));
+            
+            // Tangani pangkat (^)
+            expr = expr.replace(/(\d+(?:\.\d+)?)\s*\^\s*(\d+(?:\.\d+)?)/g, 'Math.pow($1, $2)');
+            expr = expr.replace(/(\d+(?:\.\d+)?)\^2/g, 'Math.pow($1, 2)');
+            
+            // Tangani 10^x
+            expr = expr.replace(/10\^(\d+(?:\.\d+)?)/g, 'Math.pow(10, $1)');
+            
+            // Tangani akar kuadrat
+            expr = expr.replace(/√(\d+(?:\.\d+)?)/g, 'Math.sqrt($1)');
+            
+            // Tangani fungsi trigonometri
+            expr = expr.replace(/sin\(([^)]+)\)/g, 'Math.sin($1)');
+            expr = expr.replace(/cos\(([^)]+)\)/g, 'Math.cos($1)');
+            expr = expr.replace(/tan\(([^)]+)\)/g, 'Math.tan($1)');
+            expr = expr.replace(/asin\(([^)]+)\)/g, 'Math.asin($1)');
+            expr = expr.replace(/acos\(([^)]+)\)/g, 'Math.acos($1)');
+            expr = expr.replace(/atan\(([^)]+)\)/g, 'Math.atan($1)');
+            
+            // Tangani logaritma
+            expr = expr.replace(/log\(([^)]+)\)/g, 'Math.log10($1)');
+            expr = expr.replace(/ln\(([^)]+)\)/g, 'Math.log($1)');
+            
+            // Tangani eksponensial
+            expr = expr.replace(/exp\(([^)]+)\)/g, 'Math.exp($1)');
+            
+            // Tangani nilai absolut
+            expr = expr.replace(/abs\(([^)]+)\)/g, 'Math.abs($1)');
+            
+            // Tangani 1/x
+            expr = expr.replace(/1\/(\d+(?:\.\d+)?)/g, '1/$1');
+            
+            return expr;
+        }
+        
+        // Fungsi untuk menghitung
+        function calculate() {
+            try {
+                // Simpan ekspresi asli untuk riwayat
+                const originalExpression = currentInput;
+                
+                // Proses ekspresi
+                let processedExpr = processExpression(currentInput);
+                
+                // Evaluasi ekspresi
+                let result = eval(processedExpr);
+                
+                // Format hasil
+                if (isNaN(result) || !isFinite(result)) {
+                    throw new Error('Hasil tidak valid');
+                }
+                
+                // Tambahkan efek visual saat hasil ditampilkan
+                display.classList.add('pulse');
+                setTimeout(() => {
+                    display.classList.remove('pulse');
+                }, 500);
+                
+                // Tambahkan ke riwayat
+                const historyItem = `${originalExpression} = ${result}`;
+                calculationHistory.push(historyItem);
+                updateHistoryPanel();
+                
+                // Tampilkan hasil
+                currentInput = result.toString();
+                historyDisplay.textContent = originalExpression;
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                updateDisplay();
+                setTimeout(() => {
+                    currentInput = '0';
+                    updateDisplay();
+                }, 1500);
+            }
+        }
+        
+        // Fungsi untuk menghitung akar kuadrat
+        function calculateSquareRoot() {
+            try {
+                const value = parseFloat(currentInput);
+                if (value >= 0) {
+                    const result = Math.sqrt(value);
+                    
+                    // Tambahkan ke riwayat
+                    const historyItem = `√${value} = ${result}`;
+                    calculationHistory.push(historyItem);
+                    updateHistoryPanel();
+                    
+                    currentInput = result.toString();
+                    historyDisplay.textContent = `√${value}`;
+                    updateDisplay();
+                } else {
+                    currentInput = 'Error';
+                    updateDisplay();
+                    setTimeout(() => {
+                        currentInput = '0';
+                        updateDisplay();
+                    }, 1500);
+                }
+            } catch (error) {
+                currentInput = 'Error';
+                updateDisplay();
+                setTimeout(() => {
+                    currentInput = '0';
+                    updateDisplay();
+                }, 1500);
+            }
+        }
+        
+        // Fungsi untuk memperbarui panel riwayat
+        function updateHistoryPanel() {
+            historyPanel.innerHTML = '';
+            
+            if (calculationHistory.length === 0) {
+                historyPanel.innerHTML = '<div class="text-gray-500 text-center py-8">Riwayat perhitungan akan muncul di sini</div>';
+                return;
+            }
+            
+            calculationHistory.slice().reverse().forEach(item => {
+                const historyElement = document.createElement('div');
+                historyElement.className = 'history-item text-gray-800 cursor-pointer';
+                historyElement.textContent = item;
+                historyElement.onclick = () => {
+                    // Isi display dengan ekspresi dari riwayat (tanpa hasil)
+                    const expression = item.split(' = ')[0];
+                    currentInput = expression;
+                    updateDisplay();
+                    // Kembali ke sisi kalkulator
+                    flipCard();
+                };
+                historyPanel.appendChild(historyElement);
+            });
+        }
+        
+        // Fungsi untuk menghapus riwayat
+        function clearHistory() {
+            calculationHistory = [];
+            updateHistoryPanel();
+        }
+        
+        // Fungsi untuk mengekspor riwayat
+        function exportHistory() {
+            if (calculationHistory.length === 0) {
+                alert('Tidak ada riwayat untuk diekspor');
+                return;
+            }
+            
+            const historyText = calculationHistory.join('\n');
+            const blob = new Blob([historyText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'riwayat_kalkulator.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Event listener untuk keyboard
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (/[0-9]/.test(key)) {
+                appendToDisplay(key);
+            } else if (key === '.') {
+                appendToDisplay('.');
+            } else if (key === '+') {
+                appendToDisplay('+');
+            } else if (key === '-') {
+                appendToDisplay('-');
+            } else if (key === '*') {
+                appendToDisplay('*');
+            } else if (key === '/') {
+                event.preventDefault();
+                appendToDisplay('/');
+            } else if (key === 'Enter' || key === '=') {
+                calculate();
+            } else if (key === 'Escape' || key === 'c' || key === 'C') {
+                clearAll();
+            } else if (key === 'Backspace') {
+                deleteLast();
+            } else if (key === '(') {
+                appendToDisplay('(');
+            } else if (key === ')') {
+                appendToDisplay(')');
+            } else if (key === '%') {
+                appendToDisplay('%');
+            } else if (key === 'p' || key === 'P') {
+                appendToDisplay('π');
+            }
+        });
+        
+        // Inisialisasi
+        updateDisplay();
+        updateHistoryPanel();
+    </script>
+</body>
+</html>
