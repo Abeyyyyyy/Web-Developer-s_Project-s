@@ -1,0 +1,30 @@
+## Teknologi yang Digunakan
+- HTML5
+- CSS3 (dengan CSS Variables untuk warna tema)
+- Vanilla JavaScript (ES6+)
+- Chart.js untuk visualisasi data nutrisi
+- Font Awesome untuk ikon
+- Google Fonts (Poppins & Open Sans)
+
+## Cara Menjalankan
+1. Clone atau download repository ini
+2. Buka file `index.html` di browser
+3. Atau jalankan dengan live server di VS Code
+
+## Warna Tema
+- Primary Dark: #1B3C53
+- Primary: #234C6A
+- Primary Light: #456882
+- Light: #E3E3E3
+- Accent: #FF6B6B (tambahan untuk aksen)
+
+## Navigation
+- Beranda
+- Minuman
+- Makanan
+- Gizi Seimbang
+- Tentang
+
+## Kontak
+Dibuat sebagai portofolio web development.
+Email: info@healthcareoftech.com
