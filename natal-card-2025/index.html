@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Kartu Ucapan Natal 2025 | Personal</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Background pattern -->
+        <div class="bg-elements">
+            <div class="bg-dots"></div>
+            <div class="bg-lines"></div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="main-wrapper">
+            <!-- Header Section -->
+            <header class="main-header">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h1>Buat Kartu Ucapan Natal</h1>
+                            <p class="subtitle">Personal & Elegan - 25 Desember 2025</p>
+                        </div>
+                    </div>
+                    
+                    <div class="header-info">
+                        <div class="info-card">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div class="info-text">
+                                <p class="info-title">Hari Natal</p>
+                                <p class="info-value">25 Desember 2025</p>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-clock"></i>
+                            <div class="info-text">
+                                <p class="info-title">Waktu</p>
+                                <p class="info-value" id="currentTime">{{ currentTime }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="header-divider">
+                    <div class="divider-dot"></div>
+                    <div class="divider-dot"></div>
+                    <div class="divider-dot"></div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <div class="hero-text">
+                        <h2 class="hero-title">
+                            <span class="highlight">Buat Kartu Ucapan Natal</span><br>
+                            Personal & Unik untuk 2025
+                        </h2>
+                        <p class="hero-description">
+                            Desain kartu ucapan Natal personal Anda sendiri dengan template elegan dan pesan yang penuh makna. 
+                            Bagikan kebahagiaan Natal kepada orang terkasih.
+                        </p>
+                    </div>
+                    
+                    <div class="hero-illustration">
+                        <div class="illustration-container">
+                            <div class="card-illustration">
+                                <div class="card-layer card-front">
+                                    <div class="card-content">
+                                        <h3>Selamat Natal</h3>
+                                        <p>2025</p>
+                                    </div>
+                                </div>
+                                <div class="card-layer card-back"></div>
+                            </div>
+                            <div class="floating-icons">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-tree"></i>
+                                <i class="fas fa-bell"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Card Creation Section -->
+                <section class="creation-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-pen-fancy"></i> Buat Kartu Ucapan Natal Personal Anda</h2>
+                        <p class="section-subtitle">Isi form di bawah ini untuk membuat kartu ucapan Natal yang unik dan personal</p>
+                    </div>
+
+                    <div class="creation-container">
+                        <!-- Left: Form Input -->
+                        <div class="form-section">
+                            <div class="form-card">
+                                <div class="form-header">
+                                    <h3><i class="fas fa-edit"></i> Form Pembuatan Kartu</h3>
+                                    <p class="form-instruction">Isi semua kolom dengan informasi yang diinginkan</p>
+                                </div>
+
+                                <!-- Form Table - Clear and Complete -->
+                                <div class="form-table-container">
+                                    <table class="form-table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="table-header">
+                                                    <i class="fas fa-table"></i> Data Kartu Ucapan Natal
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="label-cell">
+                                                    <label for="recipientName">
+                                                        <i class="fas fa-user"></i> Nama Penerima
+                                                    </label>
+                                                </td>
+                                                <td class="input-cell">
+                                                    <input 
+                                                        type="text" 
+                                                        id="recipientName"
+                                                        v-model="cardData.recipientName"
+                                                        placeholder="Contoh: Keluarga Smith"
+                                                        class="form-input"
+                                                    >
+                                                    <div class="input-hint">Nama orang yang akan menerima kartu</div>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="label-cell">
+                                                    <label for="cardTitle">
+                                                        <i class="fas fa-heading"></i> Judul Kartu
+                                                    </label>
+                                                </td>
+                                                <td class="input-cell">
+                                                    <input 
+                                                        type="text" 
+                                                        id="cardTitle"
+                                                        v-model="cardData.title"
+                                                        placeholder="Contoh: Selamat Hari Natal 2025"
+                                                        class="form-input"
+                                                    >
+                                                    <div class="input-hint">Judul utama pada kartu ucapan</div>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="label-cell">
+                                                    <label for="cardMessage">
+                                                        <i class="fas fa-comment-alt"></i> Pesan Utama
+                                                    </label>
+                                                </td>
+                                                <td class="input-cell">
+                                                    <textarea 
+                                                        id="cardMessage"
+                                                        v-model="cardData.message"
+                                                        rows="4"
+                                                        placeholder="Tulis pesan Natal personal Anda di sini..."
+                                                        class="form-textarea"
+                                                    ></textarea>
+                                                    <div class="input-hint">Pesan Natal yang akan ditampilkan di kartu</div>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="label-cell">
+                                                    <label for="senderName">
+                                                        <i class="fas fa-signature"></i> Nama Pengirim
+                                                    </label>
+                                                </td>
+                                                <td class="input-cell">
+                                                    <input 
+                                                        type="text" 
+                                                        id="senderName"
+                                                        v-model="cardData.senderName"
+                                                        placeholder="Contoh: John & Family"
+                                                        class="form-input"
+                                                    >
+                                                    <div class="input-hint">Nama Anda atau keluarga sebagai pengirim</div>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="label-cell">
+                                                    <label>
+                                                        <i class="fas fa-palette"></i> Warna Tema
+                                                    </label>
+                                                </td>
+                                                <td class="input-cell">
+                                                    <div class="color-selection">
+                                                        <div 
+                                                            v-for="color in colorOptions" 
+                                                            :key="color.id"
+                                                            class="color-option"
+                                                            :style="{ backgroundColor: color.value }"
+                                                            @click="selectColor(color)"
+                                                            :class="{ 'selected': selectedColor.id === color.id }"
+                                                        >
+                                                            <i v-if="selectedColor.id === color.id" class="fas fa-check"></i>
+                                                            <span class="color-name">{{ color.name }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-hint">Pilih warna tema untuk kartu Anda</div>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="label-cell">
+                                                    <label>
+                                                        <i class="fas fa-image"></i> Desain Template
+                                                    </label>
+                                                </td>
+                                                <td class="input-cell">
+                                                    <div class="template-selection">
+                                                        <div 
+                                                            v-for="template in templates" 
+                                                            :key="template.id"
+                                                            class="template-option"
+                                                            @click="selectTemplate(template)"
+                                                            :class="{ 'selected': selectedTemplate.id === template.id }"
+                                                        >
+                                                            <div class="template-preview" :style="template.style">
+                                                                <i :class="template.icon"></i>
+                                                            </div>
+                                                            <span class="template-name">{{ template.name }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-hint">Pilih desain template yang diinginkan</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Form Buttons -->
+                                <div class="form-actions">
+                                    <button @click="generateCard" class="btn btn-generate">
+                                        <i class="fas fa-magic"></i> Generate Kartu
+                                    </button>
+                                    <button @click="resetForm" class="btn btn-reset">
+                                        <i class="fas fa-redo"></i> Reset Form
+                                    </button>
+                                    <button @click="saveDraft" class="btn btn-save">
+                                        <i class="fas fa-save"></i> Simpan Draft
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Quick Message Templates -->
+                            <div class="templates-section">
+                                <h4><i class="fas fa-bolt"></i> Template Pesan Cepat</h4>
+                                <div class="quick-messages">
+                                    <button 
+                                        v-for="(template, index) in messageTemplates" 
+                                        :key="index"
+                                        @click="applyTemplate(template)"
+                                        class="quick-message-btn"
+                                    >
+                                        {{ template.title }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Card Preview -->
+                        <div class="preview-section">
+                            <div class="preview-card" :style="cardStyle">
+                                <div class="preview-inner">
+                                    <!-- Card Header -->
+                                    <div class="card-header" :style="headerStyle">
+                                        <div class="header-content">
+                                            <div class="template-icon">
+                                                <i :class="selectedTemplate.icon"></i>
+                                            </div>
+                                            <h2 class="card-preview-title">{{ cardData.title }}</h2>
+                                            <div class="card-divider">
+                                                <div class="divider-line"></div>
+                                                <div class="divider-icon">
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="divider-line"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="recipient-section">
+                                            <p class="recipient-label">Untuk:</p>
+                                            <h3 class="recipient-name">{{ cardData.recipientName || '[Nama Penerima]' }}</h3>
+                                        </div>
+                                        
+                                        <div class="message-section">
+                                            <p class="card-message">{{ cardData.message }}</p>
+                                        </div>
+                                        
+                                        <div class="signature-section">
+                                            <p class="signature-label">Dengan kasih,</p>
+                                            <h4 class="sender-name">{{ cardData.senderName || '[Nama Pengirim]' }}</h4>
+                                        </div>
+                                        
+                                        <div class="date-section">
+                                            <p class="card-date">25 Desember 2025</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Footer -->
+                                    <div class="card-footer">
+                                        <div class="footer-content">
+                                            <p class="footer-text">Selamat Hari Natal & Tahun Baru 2026</p>
+                                            <div class="footer-icons">
+                                                <i class="fas fa-tree"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-heart"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Preview Controls -->
+                            <div class="preview-controls">
+                                <div class="preview-info">
+                                    <h4><i class="fas fa-info-circle"></i> Informasi Preview</h4>
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <span class="info-label">Status:</span>
+                                            <span class="info-value" :class="cardStatus.class">{{ cardStatus.text }}</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Warna:</span>
+                                            <span class="info-value">{{ selectedColor.name }}</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Template:</span>
+                                            <span class="info-value">{{ selectedTemplate.name }}</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Ukuran:</span>
+                                            <span class="info-value">A5 (148 x 210mm)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <button @click="downloadCard" class="btn-action btn-download">
+                                        <i class="fas fa-download"></i> Download PDF
+                                    </button>
+                                    <button @click="shareCard" class="btn-action btn-share">
+                                        <i class="fas fa-share-alt"></i> Bagikan
+                                    </button>
+                                    <button @click="printCard" class="btn-action btn-print">
+                                        <i class="fas fa-print"></i> Print
+                                    </button>
+                                    <button @click="sendEmail" class="btn-action btn-email">
+                                        <i class="fas fa-envelope"></i> Kirim Email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Additional Features -->
+                <section class="features-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-star"></i> Fitur Tambahan</h2>
+                        <p class="section-subtitle">Lengkapi pengalaman membuat kartu ucapan Natal Anda</p>
+                    </div>
+
+                    <div class="features-grid">
+                        <!-- Feature 1: Music Player -->
+                        <div class="feature-card music-player">
+                            <div class="feature-header">
+                                <h3><i class="fas fa-music"></i> Musik Natal</h3>
+                                <div class="player-status" :class="{ 'playing': musicPlaying }">
+                                    {{ musicPlaying ? 'ON' : 'OFF' }}
+                                </div>
+                            </div>
+                            <div class="player-controls">
+                                <button @click="toggleMusic" class="player-btn">
+                                    <i :class="musicPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+                                </button>
+                                <div class="track-info">
+                                    <p class="track-name">Lagu Natal 2025</p>
+                                    <p class="track-artist">Christmas Special Mix</p>
+                                </div>
+                                <div class="volume-control">
+                                    <i class="fas fa-volume-down"></i>
+                                    <input 
+                                        type="range" 
+                                        min="0" 
+                                        max="100" 
+                                        v-model="volume"
+                                        @input="updateVolume"
+                                        class="volume-slider"
+                                    >
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2: Greeting Styles -->
+                        <div class="feature-card greeting-styles">
+                            <div class="feature-header">
+                                <h3><i class="fas fa-language"></i> Gaya Ucapan</h3>
+                            </div>
+                            <div class="styles-grid">
+                                <div 
+                                    v-for="style in greetingStyles" 
+                                    :key="style.id"
+                                    class="style-option"
+                                    @click="applyGreetingStyle(style)"
+                                >
+                                    <div class="style-flag">{{ style.flag }}</div>
+                                    <div class="style-info">
+                                        <p class="style-name">{{ style.name }}</p>
+                                        <p class="style-text">{{ style.greeting }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3: Statistics -->
+                        <div class="feature-card statistics">
+                            <div class="feature-header">
+                                <h3><i class="fas fa-chart-bar"></i> Statistik</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ stats.cardsCreated }}</div>
+                                    <div class="stat-label">Kartu Dibuat</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ stats.templatesUsed }}</div>
+                                    <div class="stat-label">Template Digunakan</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ stats.shares }}</div>
+                                    <div class="stat-label">Dibagikan</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">100%</div>
+                                    <div class="stat-label">Kepuasan</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Instructions Section -->
+                <section class="instructions-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-question-circle"></i> Cara Membuat Kartu</h2>
+                        <p class="section-subtitle">Panduan langkah demi langkah untuk membuat kartu ucapan Natal terbaik</p>
+                    </div>
+
+                    <div class="instructions-grid">
+                        <div class="instruction-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Isi Formulir</h3>
+                                <p>Lengkapi semua informasi di tabel form dengan data penerima, pesan, dan pengirim.</p>
+                            </div>
+                        </div>
+                        <div class="instruction-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Pilih Desain</h3>
+                                <p>Pilih warna tema dan template yang sesuai dengan selera Anda dari pilihan yang tersedia.</p>
+                            </div>
+                        </div>
+                        <div class="instruction-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Preview Kartu</h3>
+                                <p>Lihat preview kartu secara real-time di sebelah kanan dan pastikan semuanya sesuai.</p>
+                            </div>
+                        </div>
+                        <div class="instruction-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>Download & Bagikan</h3>
+                                <p>Download kartu dalam format PDF, bagikan langsung, atau kirim melalui email.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="main-footer">
+                <div class="footer-content">
+                    <div class="footer-top">
+                        <div class="footer-brand">
+                            <div class="footer-logo">
+                                <i class="fas fa-gift"></i>
+                                <div class="logo-text">
+                                    <h3>Buat Kartu Natal</h3>
+                                    <p>Personal & Elegan</p>
+                                </div>
+                            </div>
+                            <p class="footer-description">
+                                Platform pembuatan kartu ucapan Natal personal untuk merayakan Hari Natal 25 Desember 2025.
+                                Bagikan kebahagiaan dengan kartu yang bermakna.
+                            </p>
+                        </div>
+
+                        <div class="footer-links">
+                            <div class="link-group">
+                                <h4>Navigasi</h4>
+                                <a href="#" @click.prevent="scrollToSection('hero')">Buat Kartu</a>
+                                <a href="#" @click.prevent="scrollToSection('features')">Fitur</a>
+                                <a href="#" @click.prevent="scrollToSection('instructions')">Panduan</a>
+                                <a href="#" @click.prevent="showAbout">Tentang</a>
+                            </div>
+                            <div class="link-group">
+                                <h4>Resources</h4>
+                                <a href="#" @click.prevent="downloadTemplates">Template Gratis</a>
+                                <a href="#" @click.prevent="showExamples">Contoh Kartu</a>
+                                <a href="#" @click.prevent="showTips">Tips Natal</a>
+                                <a href="#" @click.prevent="showFAQ">FAQ</a>
+                            </div>
+                            <div class="link-group">
+                                <h4>Kontak</h4>
+                                <a href="mailto:info@natal2025.com">Email Support</a>
+                                <a href="#" @click.prevent="showContact">Kontak Kami</a>
+                                <a href="#" @click.prevent="showFeedback">Feedback</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-divider"></div>
+
+                    <div class="footer-bottom">
+                        <div class="social-links">
+                            <a href="#" @click.prevent="shareSocial('facebook')" class="social-link">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" @click.prevent="shareSocial('twitter')" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" @click.prevent="shareSocial('instagram')" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" @click.prevent="shareSocial('whatsapp')" class="social-link">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+
+                        <div class="copyright">
+                            <p>
+                                &copy; 2025 Buat Kartu Ucapan Natal. Semua hak dilindungi. 
+                                <span class="highlight-text">Selamat Hari Natal 2025!</span>
+                            </p>
+                        </div>
+
+                        <div class="footer-message">
+                            <p>
+                                <i class="fas fa-heart"></i>
+                                Dibuat dengan penuh kasih untuk menyebarkan sukacita Natal kepada semua orang.
+                                <i class="fas fa-heart"></i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Audio Elements -->
+        <audio ref="musicPlayer" loop>
+            <source src="https://assets.mixkit.co/music/preview/mixkit-christmas-fireplace-229.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- Notification System -->
+        <div v-if="notification.show" class="notification" :class="notification.type">
+            <div class="notification-content">
+                <i :class="notification.icon"></i>
+                <p>{{ notification.message }}</p>
+            </div>
+            <button @click="hideNotification" class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div v-if="loading" class="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <p class="loading-text">Membuat kartu Anda...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>

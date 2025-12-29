@@ -1,0 +1,177 @@
+/* Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(245, 218, 167, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(245, 218, 167, 0.8);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Apply Animations */
+.logo-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-icons i {
+    animation: float 4s ease-in-out infinite;
+}
+
+.preview-card {
+    animation: slideInUp 0.6s ease;
+}
+
+.form-card {
+    animation: slideInDown 0.6s ease;
+}
+
+.feature-card {
+    animation: fadeIn 0.6s ease;
+}
+
+.instruction-step {
+    animation: fadeIn 0.6s ease;
+}
+
+.notification {
+    animation: slideInUp 0.3s ease;
+}
+
+.loading-spinner {
+    animation: rotate 2s linear infinite;
+}
+
+/* Hover Effects */
+.btn-generate:hover,
+.btn-action:hover {
+    animation: pulse 0.3s ease;
+}
+
+.color-option:hover,
+.template-option:hover,
+.style-option:hover,
+.link-group a:hover,
+.social-link:hover {
+    animation: float 0.3s ease;
+}
+
+.quick-message-btn:hover {
+    animation: pulse 0.3s ease;
+}
+
+/* Active States */
+.color-option.selected,
+.template-option.selected {
+    animation: glow 1.5s infinite;
+}
+
+.player-status.playing {
+    animation: pulse 1s infinite;
+}
+
+/* Table Row Hover */
+.form-table tbody tr:hover {
+    background: rgba(245, 218, 167, 0.05);
+    transition: all var(--transition-normal);
+}
+
+/* Shimmer Effect for Loading */
+.btn-generate:active {
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-accent), var(--color-secondary));
+    background-size: 200% auto;
+    animation: shimmer 1.5s linear infinite;
+}
+
+/* Scroll Animations */
+@keyframes scrollReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.creation-section,
+.features-section,
+.instructions-section {
+    animation: scrollReveal 0.6s ease;
+}
+
+/* Responsive Animation Adjustments */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
